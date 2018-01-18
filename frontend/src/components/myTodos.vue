@@ -23,7 +23,6 @@ export default {
   components: {
     Todo
   },
-
   data () {
     return {
       todos: []
@@ -39,7 +38,6 @@ export default {
       this.todos = response.data.todoList
     })
     .catch(function (error) {
-      // console.log('nnnnnnnnn')
       console.error(error)
     })
   }
