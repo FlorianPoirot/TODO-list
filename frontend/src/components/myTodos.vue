@@ -1,17 +1,20 @@
 <template lang="html">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Description</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+  <div class="col-lg-1-12">
+    <table class="table table-striped" v-if="">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Description</th>
+          <th>Action {{todos.length}}</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <todo v-for="(todo, key) in todos" :name="todo.name" :content="todo.content" :key="key"></todo>
-    </tbody>
-  </table>
+      <tbody>
+        <todo v-for="(todo, key) in todos" :name="todo.name" :content="todo.content" :key="key"></todo>
+      </tbody>
+    </table>
+  </div>
+
 </template>
 
 <script>
@@ -21,7 +24,8 @@ import axios from 'axios'
 export default {
   name: 'myTodos',
   components: {
-    Todo
+    Todo,
+    lengthTodo: true
   },
   data () {
     return {

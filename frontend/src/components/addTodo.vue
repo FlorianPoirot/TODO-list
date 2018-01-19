@@ -1,27 +1,29 @@
 <template lang="html">
   <div class="col-lg-offset-3 col-lg-6">
 
-    <!-- <form class="" action="" method="post">
-      <div class="form-group">
-        <label for="nom">Nom</label>
-        <input type="text" class="form-control" id="nom" placeholder="">
-      </div>
-      <div class="form-group">
+          <!-- <form class="" action="" method="post">
+          <div class="form-group">
+          <label for="nom">Nom</label>
+          <input type="text" class="form-control" id="nom" placeholder="">
+        </div>
+        <div class="form-group">
         <label for="description">Description</label>
         <input type="text" class="form-control" id="description" placeholder="">
       </div>
 
       <button type="button" name="button">Envoyer</button>
-    </form>
-     -->
+      </form>
+      -->
 
-     <label class="col-lg-12" for="nom" >Nom</label>
-     <input type="text" id="nom" v-model="nom" class="col-lg-12"/>
-     <label for="description" class="col-lg-12">Description</label>
-     <input type="text" id="description" v-model="description" class="col-lg-12"/>
+      <div class="alert alert-danger" v-if="errorMessage">{{errorMessage}}</div>
 
-     <button type="button" @click="submitForm">Soumettre</button>
+      <label class="col-lg-12 col-sm-12" for="nom" >Nom</label>
+      <input type="text" id="nom" v-model="nom" class="col-lg-12 col-sm-12"/>
+      <label for="description" class="col-lg-12 col-sm-12">Description</label>
+      <input type="text" id="description" v-model="description" class="col-lg-12 col-sm-12"/>
 
+      <button type="button" @click="submitFormModify" v-if="ancienNom">Modifier</button>
+      <button type="button" @click="submitFormAdd" v-else>Ajouter</button>
 
   </div>
 </template>
@@ -41,27 +43,13 @@ export default {
   data () {
     return {
       nom: '',
-      description: ''
+      description: '',
+      ancienNom: '',
+      errorMessage: ''
     }
   },
   methods: {
-    submitForm () {
-      // axios.post('http://localhost:3000/add', {
-      //   name: this.nom,
-      //   content: this.description
-      // })
-      // .then(function (response) {
-      //   console.log(response)
-      // })
-      // .catch(function (error) {
-      //   console.log(error)
-      // })
-      // // this.$router.push('/')
-
-      // axios.post('http://localhost:3000/add', {
-      //   'name': this.nom,
-      //   'content': this.description
-      // })
+    submitFormAdd () {
       params.append('name', this.nom)
       params.append('content', this.description)
       axios.post(
@@ -70,16 +58,42 @@ export default {
         config,
         { withCredentials: true }
       )
-      // .then(function (response) {
-      //   console.log(response)
-      //   this.$router.push('/')
-      //   // this.todos = response.data
-      // })
       .then((response) => {
         console.log(response)
-        this.todos = response.data
-        // this.$router.push('/')
+        this.errorMessage = response.data.error
+        if (this.errorMessage) {
+          console.log(this.errorMessage)
+        } else {
+          this.$router.push('/')
+        }
       })
+    },
+    submitFormModify () {
+      params.append('oldName', this.ancienNom)
+      params.append('name', this.nom)
+      params.append('content', this.description)
+      axios.post(
+        'http://localhost:3000/modify',
+        params,
+        config,
+        { withCredentials: true }
+      )
+      .then((response) => {
+        console.log(response)
+        this.errorMessage = response.data.error
+        if (this.errorMessage) {
+          console.log(this.errorMessage)
+        } else {
+          this.$router.push('/')
+        }
+      })
+    }
+  },
+  created () {
+    if (this.$route.query.name && this.$route.query.content) {
+      this.nom = this.$route.query.name
+      this.ancienNom = this.$route.query.name
+      this.description = this.$route.query.content
     }
   }
 }

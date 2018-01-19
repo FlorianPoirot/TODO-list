@@ -7,6 +7,14 @@
         <i class="fa fa-eraser" aria-hidden="true"></i>
         Supprimer
       </button>
+
+      <router-link :to="{ path: '/add', query: { name: name, content: content } }">
+        <button class="btn btn-info" type="button">
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+          Modifier
+        </button>
+      </router-link>
+
     </td>
   </tr>
 </template>
@@ -41,9 +49,8 @@ export default {
         { withCredentials: true }
       )
       .then((response) => {
-        // console.log(response)
-        this.todos = response.data.todoList
-        console.log(this.todos)
+        console.log(response.data.todoList)
+        this.$router.push('/')
       })
     }
   }

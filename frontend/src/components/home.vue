@@ -23,6 +23,7 @@
     <router-link to="/add">
       <button type="button" name="button">
         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        Ajouter
       </button>
     </router-link>
 
