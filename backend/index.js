@@ -28,10 +28,6 @@ app.use(
         "name": "name",
         "content": "content"
       };
-      req.session.todoList["name"] = {
-        "name": "name",
-        "content": "content123"
-      };
       req.session.todoList["name1"] = {
         "name": "name1",
         "content": "content"
